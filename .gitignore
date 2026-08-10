@@ -2,3 +2,6 @@ node_modules/
 out/
 *.log
 .DS_Store
+
+# ffmpeg two-pass writes these next to the working directory while encoding.
+ffmpeg2pass*
