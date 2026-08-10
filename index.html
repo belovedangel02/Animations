@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>En memoria de Nala 'Nalita'</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #0d0908;
+    color: #e8d5bd;
+    font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+  body { display: grid; place-items: center; overflow: hidden; }
+  #stage {
+    position: relative;
+    height: 100vh;
+    aspect-ratio: 9 / 16;
+    max-width: 100vw;
+    box-shadow: 0 0 90px rgba(0, 0, 0, 0.7);
+  }
+  canvas { display: block; width: 100%; height: 100%; }
+  #bar {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: rgba(20, 14, 12, 0.76);
+    border: 1px solid rgba(214, 166, 92, 0.32);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+  body:hover #bar { opacity: 1; }
+  button {
+    font: inherit;
+    color: #f0dcc0;
+    background: transparent;
+    border: 1px solid rgba(214, 166, 92, 0.42);
+    border-radius: 999px;
+    padding: 3px 14px;
+    cursor: pointer;
+  }
+  button:hover { background: rgba(214, 166, 92, 0.16); }
+  input[type=range] { width: 240px; accent-color: #d6a65c; }
+  #clock { font-variant-numeric: tabular-nums; opacity: 0.72; min-width: 84px; }
+  /* While rendering there is no one watching — hide the furniture. */
+  body.rendering #bar { display: none; }
+  body.rendering #stage { box-shadow: none; height: auto; }
+</style>
+</head>
+<body>
+  <div id="stage"><canvas id="view"></canvas></div>
+
+  <div id="bar">
+    <button id="play">Pause</button>
+    <input id="scrub" type="range" min="0" max="1000" value="0">
+    <span id="clock">0:00 / 0:00</span>
+  </div>
+
+<script type="module">
+import { Tribute, loadImage } from './src/animation.js';
+import { DEFAULTS } from './src/config.js';
+
+const params = new URLSearchParams(location.search);
+const isRender = params.has('render');
+const num = (k, d) => (params.has(k) ? Number(params.get(k)) : d);
+
+const W = num('w', isRender ? DEFAULTS.width : 1080);
+const H = num('h', isRender ? DEFAULTS.height : 1920);
+const duration = num('duration', DEFAULTS.duration);
+
+const canvas = document.getElementById('view');
+canvas.width = W;
+canvas.height = H;
+
+if (isRender) document.body.classList.add('rendering');
+
+const pawPrints = await fetch('./src/paw-prints.json').then((r) => r.json());
+const plate = await loadImage('./assets/nala-card-2160.webp');
+const tribute = new Tribute(canvas, plate, { duration, pawPrints });
+
+// The renderer drives this directly, one exact frame at a time.
+window.tribute = tribute;
+window.renderFrame = (t, i) => tribute.renderAt(t, i);
+window.tributeReady = true;
+
+if (!isRender) {
+  const playBtn = document.getElementById('play');
+  const scrub = document.getElementById('scrub');
+  const clock = document.getElementById('clock');
+  const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+
+  let playing = true;
+  let t = 0;
+  let last = performance.now();
+  let frame = 0;
+
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    last = performance.now();
+  });
+  scrub.addEventListener('input', () => {
+    t = (scrub.value / 1000) * duration;
+    tribute.renderAt(t, frame);
+  });
+
+  const loop = (now) => {
+    const dt = Math.min(0.1, (now - last) / 1000);
+    last = now;
+    if (playing) {
+      t = (t + dt) % duration;
+      scrub.value = String((t / duration) * 1000);
+    }
+    clock.textContent = `${mmss(t)} / ${mmss(duration)}`;
+    tribute.renderAt(t, frame++);
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+}
+</script>
+</body>
+</html>

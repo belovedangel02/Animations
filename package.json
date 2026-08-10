@@ -1,0 +1,18 @@
+{
+  "name": "nala-memorial-animation",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "An animated tribute for Nala 'Nalita' — a cinematic pass across her memorial card.",
+  "scripts": {
+    "plate": "python3 tools/enhance-plate.py",
+    "paws": "python3 tools/find-paw-prints.py",
+    "preview": "node tools/serve.mjs",
+    "render": "node tools/render.mjs",
+    "render:short": "node tools/render.mjs --duration 60 --out out/nala-60s.mp4",
+    "render:draft": "node tools/render.mjs --duration 30 --width 540 --height 960 --fps 24 --out out/draft.mp4"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}
