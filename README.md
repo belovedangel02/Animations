@@ -17,6 +17,13 @@ npm run preview        # then open http://127.0.0.1:8080
 
 The page plays in real time and can be scrubbed. Hover to bring up the controls.
 
+## The rendered video
+
+A finished 1080x1920 copy of the full-length tribute is committed at
+`video/nala-tribute-1080p.mp4` (4:35, silent — see the note on music below).
+It is there so it can be downloaded without re-rendering; everything needed to
+rebuild it from scratch is in this repository.
+
 ## Rendering a video
 
 ```bash
