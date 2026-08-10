@@ -12,6 +12,10 @@ import {
   hash1, rgba, withCtx,
 } from './util.js';
 
+// Darker than the card's own paw prints, so a fresh one reads as newly pressed
+// rather than as part of the background pattern.
+const INK = [74, 48, 37];
+
 /**
  * Draws one paw print at the origin, pointing along +y, sized to `r`.
  * A cat's print: a broad rear pad with four toes fanned above it.
@@ -59,7 +63,7 @@ export class Trail {
         y: p.y + ny,
         // The print faces the way she is walking; +y is "forward" in pawPath.
         rot: ang - Math.PI / 2,
-        r: cw * 0.0165 * (0.92 + hash1(i * 17 + 4) * 0.16),
+        r: cw * 0.0215 * (0.92 + hash1(i * 17 + 4) * 0.16),
         at: u + (hash1(i * 11 + 7) - 0.5) * 0.012,
       });
     }
@@ -99,23 +103,26 @@ export class Trail {
           ctx.globalCompositeOperation = 'lighter';
           const gr = s.r * 3.4;
           const g = ctx.createRadialGradient(0, 0, 0, 0, 0, gr);
-          const ga = alpha * (0.34 + 0.55 * flare);
+          const ga = alpha * (0.22 + 0.40 * flare);
           g.addColorStop(0, rgba(PALETTE.goldBright, ga));
           g.addColorStop(0.35, rgba(PALETTE.gold, ga * 0.45));
           g.addColorStop(1, rgba(PALETTE.gold, 0));
           ctx.fillStyle = g;
           ctx.fillRect(-gr, -gr, gr * 2, gr * 2);
 
-          // The print itself, warm ink over the paper.
+          // The print itself. Dark sepia, and dark enough to hold its shape:
+          // filled with gold instead, the additive blend blows the toes out
+          // into a cluster of bright dots and the paw stops reading as a paw.
           ctx.globalCompositeOperation = 'source-over';
           pawPath(ctx, s.r);
-          ctx.fillStyle = rgba(PALETTE.ink, alpha * 0.62);
+          ctx.fillStyle = rgba(INK, alpha * 0.78);
           ctx.fill();
 
-          // A gilt edge catching the light, brightest as it lands.
+          // Just a breath of gilt as it lands, over the ink rather than instead
+          // of it.
           ctx.globalCompositeOperation = 'lighter';
           pawPath(ctx, s.r);
-          ctx.fillStyle = rgba(PALETTE.goldBright, alpha * (0.42 + 0.55 * flare));
+          ctx.fillStyle = rgba(PALETTE.goldBright, alpha * 0.16 * (0.3 + flare));
           ctx.fill();
         });
       }

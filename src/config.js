@@ -102,8 +102,8 @@ export const CAMERA_KEYS = [
   { t: 0.560, s: 1.585, x: 0.500, y: 0.757 }, // reading
   { t: 0.660, s: 2.010, x: 0.508, y: 0.906 }, // the heart
   { t: 0.720, s: 2.055, x: 0.508, y: 0.912 }, // hold — the pulse
-  { t: 0.800, s: 1.760, x: 0.330, y: 0.780 }, // pick up the trail
-  { t: 0.878, s: 1.640, x: 0.300, y: 0.600 }, // follow it up the margin
+  { t: 0.800, s: 1.430, x: 0.402, y: 0.800 }, // pick up the trail
+  { t: 0.878, s: 1.390, x: 0.386, y: 0.618 }, // follow it up the margin
   { t: 0.918, s: 1.700, x: 0.470, y: 0.400 }, // arrive at the cloud
   { t: 0.952, s: 2.080, x: 0.836, y: 0.098 }, // up to the sleeping angel
   { t: 1.000, s: 1.000, x: 0.500, y: 0.500 }, // pull back for the last look
