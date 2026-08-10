@@ -92,6 +92,12 @@ export const PALETTE = {
  * it), `x`/`y` are the card point held at screen centre. The move is a single
  * unbroken journey: meet her, read the letter, touch the heart, then follow her
  * paw prints home and pull back for the last look.
+ *
+ * The frame is never allowed off the edge of the card, so a subject close to an
+ * edge cannot be centred — the clamp wins. The angel is the case that matters:
+ * she sits near the top, and holding her anywhere but the very corner of frame
+ * means pushing in far enough that half a frame height is less than her
+ * distance from that edge. Hence the tight scale on her.
  */
 export const CAMERA_KEYS = [
   { t: 0.000, s: 1.030, x: 0.500, y: 0.500 }, // the whole card, barely moving
@@ -105,7 +111,7 @@ export const CAMERA_KEYS = [
   { t: 0.800, s: 1.430, x: 0.402, y: 0.800 }, // pick up the trail
   { t: 0.878, s: 1.390, x: 0.386, y: 0.618 }, // follow it up the margin
   { t: 0.918, s: 1.700, x: 0.470, y: 0.400 }, // arrive at the cloud
-  { t: 0.952, s: 2.080, x: 0.836, y: 0.098 }, // up to the sleeping angel
+  { t: 0.952, s: 2.750, x: 0.818, y: 0.098 }, // up to the sleeping angel
   { t: 1.000, s: 1.000, x: 0.500, y: 0.500 }, // pull back for the last look
 ];
 
