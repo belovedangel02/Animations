@@ -65,7 +65,7 @@ export class Paper {
     this.sampler.getContext('2d', { willReadFrequently: true }).drawImage(base, 0, 0, cw, ch);
     this.sctx = this.sampler.getContext('2d', { willReadFrequently: true });
 
-    this.cloud = this.makeRegionPatch(ANCHORS.cloud, 1.18, 0.42);
+    this.cloud = this.makeRegionPatch(ANCHORS.cloud, 1.06, 0.42);
     this.heart = this.makeRegionPatch(ANCHORS.heart, 1.30, 0.40);
 
     this.lids = [this.makeLid(ANCHORS.eyeL), this.makeLid(ANCHORS.eyeR)];
@@ -259,7 +259,7 @@ export class Paper {
     const p = this.cloud;
     withCtx(ctx, () => {
       ctx.globalAlpha = 0.92;
-      ctx.translate(p.cx, p.cy + p.h * 0.06);
+      ctx.translate(p.cx, p.cy + p.h * 0.015);
       ctx.scale(k, k * 1.006);
       ctx.drawImage(p.canvas, -p.w / 2, -p.h / 2);
     });

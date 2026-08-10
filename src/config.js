@@ -16,8 +16,11 @@ export const ANCHORS = {
   eyeL: { x: 0.4715, y: 0.2855, w: 0.043, h: 0.020 },
   eyeR: { x: 0.5440, y: 0.2855, w: 0.043, h: 0.020 },
 
-  // The cloud she sits on — breathes gently.
-  cloud: { x: 0.493, y: 0.538, w: 0.560, h: 0.115 },
+  // The cloud she sits on — breathes gently. Kept clear of the title below it:
+  // the breathing patch is grown and nudged downward before it is laid back
+  // down, and if its bottom edge reaches the words, the feathered mask washes
+  // out the middle of the line and leaves both ends sharp.
+  cloud: { x: 0.493, y: 0.531, w: 0.560, h: 0.099 },
 
   // The winged cat asleep in the top-right corner.
   angel: { x: 0.858, y: 0.076, w: 0.230, h: 0.105 },
